@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: user-service
+  profiles:
+    active: dev
+  config:
+    import:
+      - optional:configserver:http://admin:admin777@localhost:8888
+  cloud:
+    config:
+      name: user-service,user-service-db
