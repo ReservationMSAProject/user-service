@@ -1,0 +1,47 @@
+# 사용자 서비스 API
+
+## 인증
+
+### POST /auth/api/v1/register
+- **설명**: 신규 사용자 등록.
+- **요청 본문**: UserDto
+- **응답**: 
+    - 200 OK: "User registered successfully"
+
+### GET /auth/api/v1/user
+- **설명**: 이메일로 사용자 조회.
+- **요청 매개변수**:
+    - `email` (문자열, 필수): 사용자 이메일 주소.
+- **응답**:
+    - 200 OK: UserEntityDto
+    - 404 Not Found
+
+### GET /auth/api/v1/users
+- **설명**: 모든 사용자 조회.
+- **응답**:
+    - 200 OK: List<UserEntityDto>
+
+### POST /auth/api/v1/user/update/{id}
+- **설명**: 사용자 정보 업데이트.
+- **경로 변수**:
+    - `id` (long, 필수): 사용자 ID.
+- **요청 본문**: UserDto
+- **응답**:
+    - 200 OK: "User updated successfully"
+
+### POST /auth/api/v1/user/active/{id}
+- **설명**: 사용자 활성화 상태 업데이트.
+- **경로 변수**:
+    - `id` (long, 필수): 사용자 ID.
+- **요청 매개변수**:
+    - `active` (boolean, 필수): 사용자 활성화 상태.
+- **응답**:
+    - 200 OK: "User active status updated successfully"
+
+### POST /auth/api/v1/user/password-reset/{id}
+- **설명**: 사용자 비밀번호 재설정.
+- **경로 변수**:
+    - `id` (long, 필수): 사용자 ID.
+- **요청 본문**: UserPasswordDTO
+- **응답**:
+    - 200 OK: "User password reset successfully"
