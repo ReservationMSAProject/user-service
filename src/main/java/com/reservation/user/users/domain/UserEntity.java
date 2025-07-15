@@ -37,6 +37,7 @@ public class UserEntity {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
+    //TODO : 주소는 나중에 카카오에서 제공하는 주소 API를 사용하여 변경 예정
     @Column(name = "address")
     private String address;
 
@@ -54,5 +55,30 @@ public class UserEntity {
 
     @Column(name = "is_active", columnDefinition = "boolean default true")
     private boolean isActive = true;
+
+
+    // 프로필 업데이트 메서드 (name, email, phoneNumber, address)
+    public void updateProfile(String name, String email, String phoneNumber, String address) {
+
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    // 비밀번호 업데이트 메서드
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    // 역할 업데이트 메서드
+    public void updateRole(Roles newRole) {
+        this.role = newRole;
+    }
+
+    // 비활성화 메서드 (isActive = false)
+    public void deactivate(boolean deactivate) {
+        this.isActive = deactivate;
+    }
 
 }
