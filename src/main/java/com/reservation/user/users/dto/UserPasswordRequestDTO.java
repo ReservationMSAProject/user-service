@@ -11,7 +11,7 @@ import java.io.Serializable;
  * DTO for {@link com.reservation.user.users.domain.UserEntity}
  */
 @Value
-public class UserPasswordDTO implements Serializable {
+public class UserPasswordRequestDTO implements Serializable {
 
     @NotBlank(message = "비밀번호는 비워둘 수 없습니다.")
     @Size(min = 8, max = 100, message = "비밀번호 길이는 8~100자 사이여야 합니다.")

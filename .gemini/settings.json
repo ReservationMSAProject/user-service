@@ -1,0 +1,16 @@
+{
+  "theme": "Default",
+  "selectedAuthType": "oauth-personal",
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "$GIT_TOKEN"
+      }
+    }
+  }
+}
