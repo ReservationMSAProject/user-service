@@ -1,8 +1,9 @@
 package com.reservation.user.users.service;
 
-import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import com.reservation.user.users.domain.UserEntity;
-import com.reservation.user.users.dto.*;
+import com.reservation.user.users.dto.UserDto;
+import com.reservation.user.users.dto.UserEntityDto;
+import com.reservation.user.users.dto.UserPasswordDTO;
 import com.reservation.user.users.enums.Roles;
 import com.reservation.user.users.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,8 +21,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-    // 사용자 저장
     public UserEntity saveUser(UserDto user) {
 
         UserEntity userEntity = UserEntity.builder()
@@ -37,31 +36,6 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    // 이메일 중복 확인
-    @Transactional(readOnly = true)
-    public boolean isEmailExists(UserEmailRequestDTO email) {
-        return userRepository.existsByEmail(email.email());
-    }
-
-    // 전화번호 중복 확인
-    @Transactional(readOnly = true)
-    public boolean isPhoneNumberExists(UserPhoneRequestDTO phoneNumber) {
-        return userRepository.existsByPhoneNumber(phoneNumber.phoneNumber());
-    }
-
-    // 이메일로 사용자 조회 -> 토큰용
-    @Transactional(readOnly = true)
-    public UserInfoDTO findByUserEmailToken(String email) {
-        return userRepository.findByEmail(email)
-                .map(user -> new UserInfoDTO(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail(),
-                        user.getRole()
-                ))
-                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
-    }
-
     // 이메일로 사용자 조회
     @Transactional(readOnly = true)
     public UserEntityDto findByUserEmail(String email) {
@@ -71,7 +45,6 @@ public class UserService {
                         user.getEmail(),
                         user.getPassword(),
                         user.getPhoneNumber(),
-                        user.getRole(),
                         user.getAddress(),
                         user.getCreatedAt())
                 )
@@ -87,7 +60,6 @@ public class UserService {
                         user.getEmail(),
                         user.getPassword(),
                         user.getPhoneNumber(),
-                        user.getRole(),
                         user.getAddress(),
                         user.getCreatedAt())
                 )
@@ -103,7 +75,6 @@ public class UserService {
                         user.getEmail(),
                         user.getPassword(),
                         user.getPhoneNumber(),
-                        user.getRole(),
                         user.getAddress(),
                         user.getCreatedAt())
                 )
@@ -137,7 +108,7 @@ public class UserService {
     }
 
     // 사용자 비밀번호 업데이트
-    public void resetPassword(Long id, UserPasswordRequestDTO passwordDTO) {
+    public void resetPassword(Long id, UserPasswordDTO passwordDTO) {
         UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 
