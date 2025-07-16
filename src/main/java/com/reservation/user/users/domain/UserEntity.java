@@ -56,8 +56,6 @@ public class UserEntity {
     @Column(name = "is_active", columnDefinition = "boolean default true")
     private boolean isActive = true;
 
-    @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private RefreshToken refreshToken;
 
     // 프로필 업데이트 메서드 (name, email, phoneNumber, address)
     public void updateProfile(String name, String email, String phoneNumber, String address) {

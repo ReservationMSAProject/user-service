@@ -2,7 +2,7 @@ package com.reservation.user.users.controller;
 
 import com.reservation.user.users.dto.UserDto;
 import com.reservation.user.users.dto.UserEntityDto;
-import com.reservation.user.users.dto.UserPasswordRequestDTO;
+import com.reservation.user.users.dto.UserPasswordDTO;
 import com.reservation.user.users.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -10,16 +10,25 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/user/api/v1")
+@RequestMapping("/auth/api/v1")
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto userDto) {
+        log.info("User registration request received: {}", userDto);
+
+        userService.saveUser(userDto);
+        return ResponseEntity.ok("User registered successfully");
+    }
 
     // 이메일로 사용자 조회
     @GetMapping("/user")
@@ -53,7 +62,7 @@ public class UserController {
 
     // 사용자 비밀번호 재설정
     @PostMapping("/user/password-reset/{id}")
-    public ResponseEntity<?> resetPassword(@PathVariable("id") Long id, @RequestBody @Valid UserPasswordRequestDTO passwordDTO) {
+    public ResponseEntity<?> resetPassword(@PathVariable("id") Long id, @RequestBody @Valid UserPasswordDTO passwordDTO) {
         userService.resetPassword(id, passwordDTO);
         return ResponseEntity.ok("User password reset successfully");
     }
