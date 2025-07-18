@@ -24,6 +24,7 @@ public class UserController {
     // 이메일로 사용자 조회
     @GetMapping("/user")
     public ResponseEntity<UserEntityDto> getUser(@RequestParam("email") @Email @NotBlank String email) {
+        log.info("Getting user with email {}", email);
         UserEntityDto userEmail = userService.findByUserEmail(email);
         if (userEmail == null) {
             return ResponseEntity.notFound().build();

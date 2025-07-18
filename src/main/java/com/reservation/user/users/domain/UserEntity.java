@@ -44,6 +44,10 @@ public class UserEntity {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Roles role;
+    
+    private String picture;
+    private String provider;    // google, github, kakao 등
+    private String providerId;  // OAuth2 제공자의 사용자 ID
 
     @Column(name = "created_at")
     @CreatedDate
@@ -58,6 +62,13 @@ public class UserEntity {
 
     @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private RefreshToken refreshToken;
+
+
+    public UserEntity updateOAuth2Info(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+        return this;
+    }
 
     // 프로필 업데이트 메서드 (name, email, phoneNumber, address)
     public void updateProfile(String name, String email, String phoneNumber, String address) {
