@@ -45,15 +45,16 @@ public class AuthController {
         // ResponseCookie 사용
         ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", tokenResponse.getAccessToken())
                 .httpOnly(true)
-                .secure(true)
+//                .secure(true)
                 .maxAge(Duration.ofSeconds(tokenResponse.getExpiresIn()))
                 .path("/")
-                .sameSite("Strict")  // 문자열로 설정
+//                .sameSite("Strict")  // 문자열로 설정
+                .sameSite("Lax")
                 .build();
 
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
                 .httpOnly(true)
-                .secure(true)
+//                .secure(true)
                 .maxAge(Duration.ofDays(30))
                 .path("/")
                 .sameSite("Strict")
@@ -74,6 +75,14 @@ public class AuthController {
         return ResponseEntity.ok(clientResponse);
     }
 
+
+
+    // OAuth2 로그인 성공 후 사용자 정보 조회
+    @GetMapping("/oauth2/user")
+    public ResponseEntity<UserInfoDTO> getOAuth2User(HttpServletRequest request) {
+        UserInfoDTO userInfo = jwtUtil.getCurrentUserInfo(request);
+        return ResponseEntity.ok(userInfo);
+    }
 
     // 로그아웃
     @PostMapping("/logout")
