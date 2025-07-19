@@ -8,4 +8,4 @@ spring:
       - optional:configserver:http://admin:admin777@localhost:8888
   cloud:
     config:
-      name: user-service,user-service-db,user-service-oauth2g
+      name: user-service,user-service-db,user-service-oauth2

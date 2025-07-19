@@ -14,7 +14,7 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException, IOException {
+                                        AuthenticationException exception) throws IOException {
         response.sendRedirect("http://localhost:5173/login?error=true");
     }
 }
