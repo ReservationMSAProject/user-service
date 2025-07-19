@@ -7,12 +7,14 @@ import com.reservation.user.users.enums.Roles;
 import com.reservation.user.users.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -147,8 +149,20 @@ public class UserService {
     }
 
 
+    public UserInfoDTO createOAuth2User(String email, String name) {
+        // OAuth2 사용자 생성 로직
+        UserEntity newUser = UserEntity.builder()
+                .email(email)
+                .name(name)
+                .provider("GOOGLE") // OAuth2 제공자 표시
+                .build();
 
-
-
-
+        UserEntity savedUser = userRepository.save(newUser);
+        return UserInfoDTO.builder()
+                .id(savedUser.getId())
+                .name(savedUser.getName())
+                .email(savedUser.getEmail())
+                .role(savedUser.getRole())
+                .build();
+    }
 }

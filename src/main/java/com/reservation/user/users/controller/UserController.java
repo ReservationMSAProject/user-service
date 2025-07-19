@@ -10,8 +10,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
+import org.springframework.security.core.userdetails.User;
+
 
 @RestController
 @Slf4j
@@ -20,6 +25,19 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/me")
+    public ResponseEntity<UserEntityDto> getMyInfo(@AuthenticationPrincipal User principal) {
+
+        log.info("Getting user info for principal: {}", principal.getUsername());
+        // principal.getUsername()이 이메일(또는 유니크 식별자)라고 가정
+        UserEntityDto user = userService.findByUserEmail(principal.getUsername());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
 
     // 이메일로 사용자 조회
     @GetMapping("/user")

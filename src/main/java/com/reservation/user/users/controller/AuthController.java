@@ -36,7 +36,7 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody @Valid UserLoginRequestDTO request,
+    public ResponseEntity<?> login(@RequestBody @Valid UserLoginRequestDTO request,
                                                HttpServletResponse response) {
         log.info("로그인 요청: {}", request.getEmail());
 
@@ -64,15 +64,8 @@ public class AuthController {
         response.addHeader("Set-Cookie", accessTokenCookie.toString());
         response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
-        // 응답에서는 토큰 제거
-        TokenResponse clientResponse = TokenResponse.builder()
-                .tokenType(tokenResponse.getTokenType())
-                .expiresIn(tokenResponse.getExpiresIn())
-                .userInfo(tokenResponse.getUserInfo())
-                .build();
-
         log.info("로그인 성공: {}", request.getEmail());
-        return ResponseEntity.ok(clientResponse);
+        return ResponseEntity.ok().build();
     }
 
 
@@ -87,6 +80,8 @@ public class AuthController {
     // 로그아웃
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletResponse response) {
+
+        log.info("로그아웃 요청");
         // Access Token 쿠키 삭제
         Cookie accessTokenCookie = new Cookie("accessToken", null);
         accessTokenCookie.setMaxAge(0);
@@ -98,6 +93,14 @@ public class AuthController {
         refreshTokenCookie.setMaxAge(0);
         refreshTokenCookie.setPath("/");
         response.addCookie(refreshTokenCookie);
+
+        // JSESSIONID 쿠키 삭제
+        Cookie JSESSIONIDTokenCookie = new Cookie("JSESSIONID", null);
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setPath("/");
+        response.addCookie(JSESSIONIDTokenCookie);
+
+
 
         return ResponseEntity.ok("로그아웃 성공");
     }
