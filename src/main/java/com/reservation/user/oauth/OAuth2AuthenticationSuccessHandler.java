@@ -25,26 +25,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     private final JwtProvider jwtProvider;
     private final UserService userService;
 
-//    @Override
-//    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-//                                        Authentication authentication) throws IOException {
-//        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-//        String email = oAuth2User.getAttribute("email");
-//
-//        // 사용자 정보 조회
-//        UserInfoDTO userInfo = userService.findByUserEmailToken(email);
-//
-//        // JWT 토큰 생성
-//        JwtTokenPair tokenPair = jwtProvider.generateTokenPair(authentication, userInfo);
-//
-//        // 쿠키 설정
-//        setAuthCookies(response, tokenPair);
-//
-//        // 세션 무효화
-//        request.getSession().invalidate();
-//        // 프론트엔드 리디렉션
-//        response.sendRedirect("http://localhost:5173/profile");
-//    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
